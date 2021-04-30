@@ -2,9 +2,9 @@ import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 
-import Home from '../Screens/Home';
-import Results from '../Screens/Results';
-import Details from '../Screens/Details';
+import HomeScreen from '../Screens/HomeScreen';
+import ResultsScreen from '../Screens/ResultsScreen';
+import DetailsScreen from '../Screens/DetailsScreen';
 
 const Stack = createStackNavigator();
 
@@ -12,11 +12,11 @@ const MainStackNavigation = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home" screenOptions={screenOptions}>
-        <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen name="Results" component={Results} />
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Results" component={ResultsScreen} />
         <Stack.Screen
           name="Details"
-          component={Details}
+          component={DetailsScreen}
           options={{title: 'DETAILS'}}
         />
       </Stack.Navigator>
