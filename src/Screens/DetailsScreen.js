@@ -7,7 +7,7 @@ import {
   SafeAreaView,
   ScrollView,
   Button,
-  Alert,
+  Alert
 } from 'react-native';
 import YoutubePlayer from 'react-native-youtube-iframe';
 
