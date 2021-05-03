@@ -38,7 +38,7 @@ const ResultsScreen = props => {
         return res.json({});
       })
       .then(res => setAnimes(res))
-      .catch(erro => setError(erro + ' Não foi possivel realizar a busca'));
+      .catch(error => setError(error + ' Não foi possivel realizar a busca'));
   }, []);
 
   return (
