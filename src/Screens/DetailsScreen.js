@@ -7,13 +7,34 @@ import {
   SafeAreaView,
   ScrollView,
   Button,
-  Alert
+  Alert,
 } from 'react-native';
 import YoutubePlayer from 'react-native-youtube-iframe';
 
 const DetailsScreen = props => {
-  const {anime} = props.route.params;
+  const {animeData} = props.route.params;
   const [playing, setPlaying] = useState(false);
+
+  function renderImage() {
+    return (
+      <Image
+        style={styles.poster}
+        source={{uri: animeData.attributes.coverImage.original}}
+        alt={animeData.attributes.canonicalTitle}
+      />
+    );
+  }
+
+  function renderTrailer() {
+    return (
+      <YoutubePlayer
+        height={200}
+        play={playing}
+        videoId={animeData.attributes.youtubeVideoId}
+        onChangeState={onStateChange}
+      />
+    );
+  }
 
   const onStateChange = useCallback(state => {
     if (state === 'ended') {
@@ -27,24 +48,10 @@ const DetailsScreen = props => {
   }, []);
 
   return (
-    <SafeAreaView style={styles.display} >
+    <SafeAreaView style={styles.display}>
       <ScrollView>
-        <View >
-          {!playing && (
-            <Image
-              style={styles.poster}
-              source={{uri: anime.attributes.coverImage.original}}
-              alt={anime.attributes.canonicalTitle}
-            />
-          )}
-          {playing && (
-            <YoutubePlayer
-              height={200}
-              play={playing}
-              videoId={anime.attributes.youtubeVideoId}
-              onChangeState={onStateChange}
-            />
-          )}
+        <View>
+          {!playing ? renderImage() : renderTrailer()}
 
           <Button
             title={playing ? 'pause' : 'Trailer'}
@@ -52,34 +59,43 @@ const DetailsScreen = props => {
           />
 
           <View style={styles.information}>
-            <Text style={styles.title}>{anime.attributes.canonicalTitle}</Text>
+            <Text style={styles.title}>
+              {animeData.attributes.canonicalTitle}
+            </Text>
             <View style={styles.info}>
-              <Text style={styles.text}>
-                Avarage Rating:{' '}
+              <View style={styles.containText}>
+                <Text style={styles.text}>Average Rating:</Text>
                 <Text style={{color: '#22bb33'}}>
-                  {anime.attributes.averageRating}
+                  {animeData.attributes.averageRating}
                 </Text>
-              </Text>
-              <Text style={styles.text}>
-              {' '}Popularity Rank:{' '}
+              </View>
+              <View style={styles.containText}>
+                <Text style={styles.text}>Popularity Rank:</Text>
                 <Text style={{color: '#22bb33'}}>
-                  {anime.attributes.popularityRank}
+                  {animeData.attributes.popularityRank}
                 </Text>
-              </Text>
-              <Text style={styles.text}>
-                Episode Count:{' '}
+              </View>
+              <View style={styles.containText}>
+                <Text style={styles.text}>Episode Count:</Text>
                 <Text style={{color: '#22bb33'}}>
-                  {anime.attributes.episodeCount}
+                  {animeData.attributes.episodeCount}
                 </Text>
-              </Text>
+              </View>
             </View>
             <View style={styles.info}>
               <Text style={{flexGrow: 1, color: 'white', marginTop: 4}}>
-                Age Rating Guide: {anime.attributes.ageRatingGuide}
+                Age Rating Guide: {animeData.attributes.ageRatingGuide}
               </Text>
             </View>
-            <Text style={{marginTop: 4, color: 'white', textAlign: 'justify', flexGrow:1, flexBasis: 0}}>
-              Synopsis: {anime.attributes.synopsis}
+            <Text
+              style={{
+                marginTop: 4,
+                color: 'white',
+                textAlign: 'justify',
+                flexGrow: 1,
+                flexBasis: 0,
+              }}>
+              Synopsis: {animeData.attributes.synopsis}
             </Text>
           </View>
         </View>
@@ -95,7 +111,7 @@ const styles = StyleSheet.create({
   display: {
     backgroundColor: 'black',
     opacity: 0.84,
-    height: '100%',
+    flex: 1,
     flexGrow: 1,
   },
   information: {
@@ -117,6 +133,9 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     flexBasis: 0,
   },
+  containText: {
+    margin: 6
+  }
 });
 
 export default DetailsScreen;
