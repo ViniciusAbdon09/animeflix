@@ -27,7 +27,7 @@ const HomeScreen = (props) => {
           <Button
             title="SEARCH"
             onPress={() => {
-              props.navigation.navigate('Results', {search: text})
+              props.navigation.navigate('Results', {searchQueryInput: text})
               setText('')
               }
             }
